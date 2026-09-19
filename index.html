@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>TIMIZA Fund</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fafafa; color: #1a1a1a; min-height: 100vh; }
+.topbar { position: sticky; top: 0; z-index: 100; background: #ffffff; border-bottom: 1px solid #ececec; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; background: #8B0000; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; letter-spacing: -0.5px; }
+.brand-text { display: flex; flex-direction: column; }
+.brand-text .name { font-weight: 800; font-size: 15px; color: #1a1a1a; letter-spacing: 0.5px; }
+.brand-text .sub { font-size: 10px; color: #8B0000; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; }
+.topbar-badge { background: #fdf5f5; color: #8B0000; padding: 6px 14px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+.screen { display: none; min-height: calc(100vh - 65px); }
+.screen.active { display: block; animation: appear 0.35s ease-out; }
+@keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.wrap { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+.wrap-narrow { max-width: 560px; }
+.hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; max-width: 1000px; margin: 0 auto; padding: 60px 24px; min-height: calc(100vh - 65px); }
+.hero-left .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #8B0000; background: #fdf5f5; padding: 6px 14px; border-radius: 50px; margin-bottom: 20px; text-transform: uppercase; }
+.hero-left h1 { font-size: 44px; font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; color: #1a1a1a; margin-bottom: 16px; }
+.hero-left h1 span { color: #8B0000; }
+.hero-left p { font-size: 16px; color: #555; line-height: 1.6; margin-bottom: 32px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-pill { padding: 14px 28px; border: none; border-radius: 50px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 8px; }
+.btn-pill.solid { background: #8B0000; color: #fff; }
+.btn-pill.solid:hover { background: #6B0000; transform: translateY(-1px); }
+.btn-pill.ghost { background: transparent; color: #8B0000; border: 1.5px solid #e5d5d5; }
+.btn-pill.ghost:hover { border-color: #8B0000; background: #fdf5f5; }
+.hero-right { position: relative; }
+.hero-card { background: #8B0000; color: #fff; border-radius: 24px; padding: 32px 28px; box-shadow: 0 20px 50px rgba(139,0,0,0.15); }
+.hero-card .mini-label { font-size: 11px; opacity: 0.75; letter-spacing: 1.5px; font-weight: 600; text-transform: uppercase; }
+.hero-card .mini-amount { font-size: 34px; font-weight: 800; margin: 8px 0 20px; letter-spacing: -1px; }
+.hero-card .mini-rows { display: flex; flex-direction: column; gap: 12px; }
+.hero-card .mini-row { display: flex; justify-content: space-between; font-size: 13px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.15); }
+.hero-card .mini-row:last-child { border-bottom: none; }
+.hero-card .mini-row span:first-child { opacity: 0.7; }
+.hero-card .mini-row span:last-child { font-weight: 700; }
+@media (max-width: 800px) { .hero-split { grid-template-columns: 1fr; padding: 40px 20px; } .hero-left h1 { font-size: 34px; } }
+.section-head { margin-bottom: 28px; }
+.section-head .step-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #8B0000; text-transform: uppercase; margin-bottom: 10px; }
+.section-head h2 { font-size: 26px; font-weight: 800; color: #1a1a1a; letter-spacing: -0.8px; margin-bottom: 6px; }
+.section-head p { font-size: 14px; color: #666; line-height: 1.5; }
+.section-head .required { color: #8B0000; font-weight: 700; }
+.panel { background: #fff; border: 1px solid #ececec; border-radius: 18px; padding: 28px 24px; margin-bottom: 20px; }
+.panel-head { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.panel-head .num { width: 26px; height: 26px; border-radius: 50%; background: #fdf5f5; color: #8B0000; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.panel-head h3 { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #1a1a1a; }
+.field { margin-bottom: 18px; }
+.field-label { display: block; font-size: 12px; font-weight: 700; color: #444; letter-spacing: 0.3px; margin-bottom: 6px; }
+.field-label .req { color: #8B0000; }
+.field-wrap { position: relative; width: 100%; }
+.field-wrap input, .field-wrap select, .field-wrap .fake-select { width: 100%; height: 46px; padding: 0 38px 0 14px; background: #f7f7f7; border: 1.5px solid transparent; border-radius: 12px; font-family: inherit; font-size: 14px; color: #1a1a1a; outline: none; transition: all 0.2s ease; display: flex; align-items: center; }
+.field-wrap input::placeholder { color: #aaa; }
+.field-wrap input:focus, .field-wrap select:focus { background: #fff; border-color: #8B0000; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 480px) { .field-row { grid-template-columns: 1fr; gap: 0; } .field-row .field { margin-bottom: 18px; } }
+.tick { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; pointer-events: none; font-weight: 800; }
+.field-wrap.ok input, .field-wrap.ok select, .field-wrap.ok .fake-select { border-color: #8B0000; background: #fdf5f5; }
+.field-wrap.ok .tick::after { content: "✓"; color: #8B0000; font-size: 15px; }
+.field-wrap.bad input, .field-wrap.bad select, .field-wrap.bad .fake-select { border-color: #8B0000; background: #fdf5f5; }
+.field-wrap.bad .tick::after { content: "✕"; color: #8B0000; font-size: 12px; }
+.err { color: #8B0000; font-size: 11px; margin-top: 5px; display: none; font-weight: 600; }
+.field-wrap.bad + .err { display: block; }
+.fake-select { cursor: pointer; position: relative; }
+.chev { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #888; pointer-events: none; }
+.kin-block { background: #fdf5f5; border: 1px dashed #e5cfcf; border-radius: 14px; padding: 18px; margin: 20px 0; }
+.kin-block .kin-tag { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #8B0000; margin-bottom: 14px; }
+.btn-full { width: 100%; padding: 16px; border: none; border-radius: 50px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.3px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; }
+.btn-full.primary { background: #8B0000; color: #fff; box-shadow: 0 8px 20px rgba(139,0,0,0.18); }
+.btn-full.primary:hover { background: #6B0000; transform: translateY(-1px); }
+.btn-full.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-full.soft { background: #f7f7f7; color: #333; }
+.btn-full.soft:hover { background: #ededed; }
+.btn-full.ghost { background: transparent; color: #8B0000; border: 1.5px solid #e5d5d5; }
+.btn-full.ghost:hover { background: #fdf5f5; }
+.purpose-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .purpose-grid { grid-template-columns: 1fr; } }
+.purpose-tile { background: #fff; border: 1.5px solid #ececec; border-radius: 16px; padding: 16px 18px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 14px; position: relative; font-family: inherit; }
+.purpose-tile:hover { border-color: #8B0000; background: #fdf5f5; }
+.purpose-tile .idx { width: 32px; height: 32px; border-radius: 10px; background: #f7f7f7; color: #8B0000; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; transition: all 0.2s ease; }
+.purpose-tile.picked { border-color: #8B0000; background: #fdf5f5; }
+.purpose-tile.picked .idx { background: #8B0000; color: #fff; }
+.purpose-tile .label { font-size: 14px; font-weight: 600; color: #333; }
+.purpose-tile .check { position: absolute; top: 12px; right: 12px; width: 18px; height: 18px; border: 1.5px solid #ddd; border-radius: 50%; }
+.purpose-tile.picked .check { background: #8B0000; border-color: #8B0000; }
+.purpose-tile.picked .check::after { content: "✓"; color: #fff; font-size: 10px; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.tip-bar { background: #fdf5f5; border-left: 3px solid #8B0000; border-radius: 10px; padding: 12px 16px; font-size: 12px; color: #8B0000; font-weight: 500; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.timeline-check { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+.tl-item { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid #ececec; border-radius: 14px; padding: 14px 18px; transition: all 0.3s ease; opacity: 0.5; }
+.tl-item.live { border-color: #8B0000; background: #fdf5f5; opacity: 1; }
+.tl-item.done { border-color: #8B0000; background: #fdf5f5; opacity: 1; }
+.tl-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #ddd; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 800; font-size: 12px; color: #999; }
+.tl-item.live .tl-dot { border-color: #8B0000; border-top-color: transparent; animation: spin 0.9s linear infinite; }
+.tl-item.done .tl-dot { background: #8B0000; border-color: #8B0000; color: #fff; }
+.tl-item.done .tl-dot::after { content: "✓"; }
+.tl-label { font-size: 13.5px; font-weight: 600; color: #333; }
+.spinner-big { width: 70px; height: 70px; border: 5px solid #f0e5e5; border-top-color: #8B0000; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.approved-hero { background: #8B0000; color: #fff; border-radius: 24px; padding: 40px 32px; text-align: center; box-shadow: 0 20px 50px rgba(139,0,0,0.2); margin-bottom: 20px; }
+.approved-hero .greet { font-size: 13px; opacity: 0.75; letter-spacing: 1.5px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+.approved-hero .big-amount { font-size: 54px; font-weight: 900; letter-spacing: -2px; margin: 12px 0; line-height: 1; }
+.approved-hero .verify-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.15); padding: 8px 18px; border-radius: 50px; font-size: 12px; font-weight: 600; }
+.stat-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+@media (max-width: 480px) { .stat-strip { grid-template-columns: 1fr; } }
+.stat-cell { background: #fff; border: 1px solid #ececec; border-radius: 14px; padding: 16px; text-align: center; }
+.stat-cell .num { font-size: 20px; font-weight: 800; color: #8B0000; }
+.stat-cell .lbl { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; margin-top: 2px; }
+.fee-hero { background: #8B0000; color: #fff; border-radius: 24px; padding: 32px; text-align: center; margin-bottom: 20px; box-shadow: 0 20px 50px rgba(139,0,0,0.15); }
+.fee-hero .fee-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; opacity: 0.8; margin-bottom: 8px; }
+.fee-hero .fee-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+.fee-hero .fee-amount { font-size: 44px; font-weight: 900; letter-spacing: -1.5px; margin-top: 8px; }
+.fee-hero .fee-sub { font-size: 12px; opacity: 0.75; margin-top: 6px; }
+.summary-list { background: #fff; border: 1px solid #ececec; border-radius: 16px; padding: 8px 20px; margin-bottom: 20px; }
+.sum-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f4f4f4; font-size: 13.5px; }
+.sum-row:last-child { border-bottom: none; }
+.sum-row .k { color: #777; font-weight: 500; }
+.sum-row .v { font-weight: 700; color: #1a1a1a; }
+.sum-row.hi .v { color: #8B0000; font-size: 15px; }
+.note-box { background: #fdf5f5; border-radius: 14px; padding: 16px 18px; font-size: 12.5px; color: #8B0000; line-height: 1.55; font-weight: 500; margin-bottom: 18px; display: flex; gap: 10px; }
+.feed-wrap { background: #fff; border: 1px solid #ececec; border-radius: 16px; padding: 18px; margin-top: 24px; }
+.feed-head { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; margin-bottom: 14px; color: #1a1a1a; }
+.live-dot { display: inline-block; background: #8B0000; color: #fff; font-size: 9px; font-weight: 800; padding: 3px 10px; border-radius: 50px; letter-spacing: 0.8px; animation: pulse 1.6s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+.feed-list { max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.feed-row { display: flex; gap: 12px; padding: 10px 12px; background: #fafafa; border-radius: 12px; animation: slide-in 0.3s ease; }
+@keyframes slide-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+.feed-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 12px; flex-shrink: 0; }
+.feed-body { flex: 1; }
+.feed-name { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+.feed-name .badge { color: #8B0000; font-size: 10px; margin-left: 4px; }
+.feed-text { font-size: 12px; color: #555; margin-top: 2px; line-height: 1.4; }
+.feed-time { font-size: 10px; color: #999; margin-top: 3px; }
+.stamp { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f7f7f7; border-radius: 12px; padding: 14px; font-size: 11px; font-weight: 700; color: #8B0000; letter-spacing: 0.5px; text-align: center; margin-top: 20px; }
+.stamp .flag { font-size: 16px; margin-top: 4px; }
+.sheet-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 2000; display: none; opacity: 0; transition: opacity 0.3s ease; }
+.sheet-backdrop.show { display: block; opacity: 1; }
+.sheet { position: fixed; bottom: -100%; left: 0; right: 0; background: #fff; border-radius: 24px 24px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); z-index: 2001; transition: bottom 0.3s cubic-bezier(0.16,1,0.3,1); max-height: 85vh; overflow-y: auto; padding: 20px 0 40px; }
+.sheet.show { bottom: 0; }
+.sheet-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid #f4f4f4; cursor: pointer; font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.sheet-item:last-child { border-bottom: none; }
+.sheet-item:hover { background: #fafafa; }
+.radio-mark { width: 20px; height: 20px; border: 2px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sheet-item.on .radio-mark { border-color: #8B0000; }
+.sheet-item.on .radio-mark::after { content: ""; width: 9px; height: 9px; background: #8B0000; border-radius: 50%; }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+.overlay.show { display: flex; }
+.modal { background: #fff; border-radius: 22px; padding: 28px 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.25); animation: pop-in 0.25s ease; }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: none; } }
+.modal .ico { width: 54px; height: 54px; border-radius: 50%; background: #fdf5f5; color: #8B0000; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; font-size: 24px; }
+.modal h3 { font-size: 19px; font-weight: 800; margin-bottom: 6px; color: #1a1a1a; }
+.modal p { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+.phone-input { display: flex; border: 1.5px solid #e0e0e0; border-radius: 12px; overflow: hidden; margin: 8px 0 12px; }
+.phone-input .pfix { background: #f7f7f7; padding: 12px 14px; font-weight: 600; color: #333; border-right: 1.5px solid #e0e0e0; display: flex; align-items: center; }
+.phone-input input { flex: 1; border: none; padding: 12px 14px; font-family: inherit; font-size: 14px; outline: none; }
+.status-chip { font-size: 12px; padding: 8px 12px; border-radius: 8px; margin: 10px 0; display: none; font-weight: 500; }
+.status-chip.show { display: block; }
+.status-chip.warn { background: #fdf5f5; color: #8B0000; }
+.status-chip.good { background: #fdf5f5; color: #8B0000; }
+.status-chip.bad { background: #fdf5f5; color: #8B0000; }
+.btn-row { display: flex; gap: 10px; }
+.btn-row .btn-full { margin-top: 0; }
+.stk-wait { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+.stk-wait.show { display: flex; }
+.stk-wait .box { background: #fff; border-radius: 22px; padding: 32px 26px; max-width: 380px; width: 100%; text-align: center; }
+.stk-wait .ring { width: 68px; height: 68px; border: 5px solid #f0e5e5; border-top-color: #8B0000; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 18px; }
+.stk-wait h3 { font-size: 18px; font-weight: 800; color: #8B0000; margin-bottom: 8px; }
+.stk-wait p { font-size: 13px; color: #555; line-height: 1.55; margin-bottom: 6px; }
+.stk-wait .tel { font-weight: 700; color: #8B0000; }
+.stk-wait .dots { display: flex; justify-content: center; gap: 6px; margin: 18px 0; }
+.stk-wait .dots span { width: 9px; height: 9px; background: #8B0000; border-radius: 50%; animation: bounce 1.2s infinite ease-in-out; }
+.stk-wait .dots span:nth-child(1) { animation-delay: -0.3s; }
+.stk-wait .dots span:nth-child(2) { animation-delay: -0.15s; }
+@keyframes bounce { 0%,80%,100%{transform:scale(0);} 40%{transform:scale(1);} }
+.stk-wait .chip { display: inline-flex; align-items: center; gap: 6px; background: #fdf5f5; color: #8B0000; padding: 7px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; }
+.stk-wait .chip .pt { width: 7px; height: 7px; background: #8B0000; border-radius: 50%; animation: pulse 1.5s infinite; }
+.proc-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 16px; }
+.proc-modal.show { display: flex; }
+.proc-box { background: #fff; border-radius: 18px; width: 100%; max-width: 480px; padding: 22px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; align-items: center; }
+@media (max-width: 420px) { .proc-box { grid-template-columns: 1fr; text-align: center; } }
+.proc-side { display: flex; flex-direction: column; gap: 10px; }
+.proc-brand { display: flex; gap: 10px; align-items: flex-start; }
+.proc-brand .pbadge { background: #8B0000; color: #fff; font-weight: 800; font-size: 9px; padding: 8px 5px; border-radius: 6px; text-align: center; min-width: 50px; line-height: 1.1; }
+.proc-brand .ptxt { font-size: 10px; font-weight: 700; color: #8B0000; line-height: 1.3; }
+.proc-brand .ptxt strong { font-size: 13px; display: block; color: #1a1a1a; margin-top: 2px; }
+.proc-side .stat { font-weight: 700; font-size: 12px; color: #333; margin-top: 4px; }
+.proc-dots { display: flex; gap: 5px; }
+.proc-dots span { width: 7px; height: 7px; background: #8B0000; border-radius: 50%; animation: bounce 1.2s infinite ease-in-out; }
+.proc-dots span:nth-child(1) { animation-delay: -0.3s; }
+.proc-dots span:nth-child(2) { animation-delay: -0.15s; }
+.proc-note { font-size: 11px; color: #777; line-height: 1.5; border-left: 1px solid #eee; padding-left: 16px; }
+@media (max-width: 420px) { .proc-note { border-left: none; padding-left: 0; border-top: 1px solid #eee; padding-top: 12px; } }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 12px 22px; border-radius: 50px; font-size: 13px; font-weight: 600; z-index: 9999; display: none; max-width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.toast.show { display: block; animation: rise 0.3s ease; }
+@keyframes rise { from { opacity: 0; transform: translate(-50%, 14px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.foot { text-align: center; font-size: 11px; color: #999; padding: 24px 20px 0; line-height: 1.6; max-width: 900px; margin: 0 auto; }
+.foot strong { color: #8B0000; }
+.back-pill { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1.5px solid #ececec; padding: 8px 18px; border-radius: 50px; font-family: inherit; font-size: 12px; font-weight: 700; color: #8B0000; cursor: pointer; margin-bottom: 20px; transition: all 0.2s ease; }
+.back-pill:hover { border-color: #8B0000; background: #fdf5f5; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark">TZ</div>
+    <div class="brand-text">
+      <span class="name">TIMIZA</span>
+      <span class="sub">Fund</span>
+    </div>
+  </div>
+  <div class="topbar-badge">Secure Portal</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- ============ SCREEN: WELCOME ============ -->
+<div id="welcomePage" class="screen active">
+  <div class="hero-split">
+    <div class="hero-left">
+      <span class="eyebrow">KARIBU · WELCOME</span>
+      <h1>Empower your <span>future</span> with TIMIZA Fund.</h1>
+      <p>Funding dreams, one person at a time. Apply in under 3 minutes — no paperwork, no guarantors, straight to your M-Pesa.</p>
+      <div class="hero-actions">
+        <button class="btn-pill solid" onclick="startApplication()">Start Application →</button>
+        <button class="btn-pill ghost" onclick="showToast('Please press Start Application to begin.')">Learn More</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="mini-label">APPROVED CEILING</div>
+        <div class="mini-amount">Ksh 15,000</div>
+        <div class="mini-rows">
+          <div class="mini-row"><span>Processing time</span><span>Under 3 min</span></div>
+          <div class="mini-row"><span>Paperwork</span><span>None</span></div>
+          <div class="mini-row"><span>Guarantors</span><span>Not required</span></div>
+          <div class="mini-row"><span>Payout</span><span>M-Pesa instant</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot">Powered by <strong>TIMIZA Fund</strong></div>
+</div>
+
+<!-- ============ SCREEN: STEP 1 ============ -->
+<div id="step1" class="screen">
+  <div class="wrap">
+    <button class="back-pill" onclick="showPage('welcomePage')">← Back to home</button>
+    <div class="section-head">
+      <span class="step-tag">STEP 1 · APPLICATION</span>
+      <h2>Tell us who you are</h2>
+      <p>Fill in all fields marked <span class="required">*</span>. Applicants must be 18 years or older.</p>
+    </div>
+
+    <form id="appForm" onsubmit="submitApplication(event)" novalidate>
+      <div class="panel">
+        <div class="panel-head"><div class="num">1</div><h3>Personal Details</h3></div>
+        <div class="field">
+          <label class="field-label">Full Name <span class="req">*</span></label>
+          <div class="field-wrap" id="fullNameWrapper">
+            <input type="text" id="fullName" placeholder="Enter your full name" required>
+            <span class="tick"></span>
+          </div>
+          <div class="err" id="nameError">Name must contain letters only.</div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Phone Number <span class="req">*</span></label>
+            <div class="field-wrap" id="phoneNumberWrapper">
+              <input type="tel" id="phoneNumber" placeholder="0712345678" required>
+              <span class="tick"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">National ID <span class="req">*</span></label>
+            <div class="field-wrap" id="nationalIdWrapper">
+              <input type="text" id="nationalId" placeholder="12345678" required>
+              <span class="tick"></span>
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">Age (18+) <span class="req">*</span></label>
+            <div class="field-wrap" id="ageWrapper">
+              <input type="number" id="age" placeholder="25" required>
+              <span class="tick"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Occupation <span class="req">*</span></label>
+            <div class="field-wrap" id="occupationWrapper">
+              <input type="text" id="occupation" placeholder="Farmer, Student..." required>
+              <span class="tick"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div class="num">2</div><h3>Location & Contact</h3></div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label">County <span class="req">*</span></label>
+            <div class="field-wrap" id="countyWrapper">
+              <select id="county" required>
+                <option value="">Select County</option>
+                <option>Nairobi</option><option>Mombasa</option><option>Kisumu</option>
+                <option>Nakuru</option><option>Eldoret</option><option>Meru</option>
+                <option>Nyeri</option><option>Kisii</option><option>Bomet</option>
+                <option>Kakamega</option><option>Machakos</option><option>Kilifi</option>
+                <option>Garissa</option><option>Kitui</option><option>Embu</option>
+                <option>Murang'a</option><option>Kiambu</option><option>Nyandarua</option>
+                <option>Laikipia</option><option>Turkana</option><option>Marsabit</option>
+                <option>Isiolo</option><option>Tharaka Nithi</option><option>Kirinyaga</option>
+                <option>Kajiado</option><option>Narok</option><option>Taita Taveta</option>
+                <option>Kwale</option><option>Tana River</option><option>Lamu</option>
+                <option>Mandera</option><option>Wajir</option><option>Vihiga</option>
+                <option>Bungoma</option><option>Busia</option><option>Nyamira</option>
+              </select>
+              <span class="tick"></span>
+            </div>
+            <div class="err" id="countyError">Please select your county.</div>
+          </div>
+          <div class="field">
+            <label class="field-label">Email (optional)</label>
+            <div class="field-wrap" id="emailWrapper">
+              <input type="email" id="email" placeholder="name@example.com">
+              <span class="tick"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div class="num">3</div><h3>Next of Kin</h3></div>
+        <div class="kin-block">
+          <div class="kin-tag">OPTIONAL</div>
+          <div class="field-row">
+            <div class="field">
+              <div class="field-wrap" id="nextKinNameWrapper">
+                <input type="text" id="nextKinName" placeholder="Kin Name">
+                <span class="tick"></span>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-wrap" id="nextKinPhoneWrapper">
+                <input type="tel" id="nextKinPhone" placeholder="Kin Phone">
+                <span class="tick"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div class="num">4</div><h3>Referral</h3></div>
+        <div class="field">
+          <label class="field-label">Where did you hear about TIMIZA? <span class="req">*</span></label>
+          <div class="field-wrap" id="hearAboutTriggerWrapper" onclick="openHearAboutSheet()">
+            <div class="fake-select" id="hearAboutDisplay">Friend / Family</div>
+            <span class="chev"></span>
+            <span class="tick"></span>
+          </div>
+          <input type="hidden" id="hearAboutValue" name="hearAbout" value="Friend/Family">
+          <div class="err" id="hearError">Please select how you heard about TIMIZA.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-full primary">Submit Application →</button>
+    </form>
+
+    <div class="stamp">
+      <span>TIMIZA FUND · APPROVED PORTAL</span>
+      <span class="flag">🔒</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: STEP 2 ============ -->
+<div id="step2" class="screen">
+  <div class="wrap wrap-narrow">
+    <button class="back-pill" onclick="goToStep(1)">← Back to form</button>
+    <div class="section-head">
+      <span class="step-tag">STEP 2 · FUND PURPOSE</span>
+      <h2 id="purposeGreeting">What will you use your TIMIZA Funds for?</h2>
+      <p>Pick one purpose that best matches your plan.</p>
+    </div>
+
+    <div class="tip-bar">💡 Kindly use your TIMIZA Funds wisely and responsibly.</div>
+
+    <div class="purpose-grid" id="purposeOptions">
+      <div class="purpose-tile" data-value="Start a business" onclick="selectPurposeOption(this)">
+        <div class="idx">1</div>
+        <div class="label">Start a business</div>
+        <div class="check"></div>
+      </div>
+      <div class="purpose-tile" data-value="Top up a business" onclick="selectPurposeOption(this)">
+        <div class="idx">2</div>
+        <div class="label">Top up a business</div>
+        <div class="check"></div>
+      </div>
+      <div class="purpose-tile" data-value="Pay school fees" onclick="selectPurposeOption(this)">
+        <div class="idx">3</div>
+        <div class="label">Pay school fees</div>
+        <div class="check"></div>
+      </div>
+      <div class="purpose-tile" data-value="Pay bills" onclick="selectPurposeOption(this)">
+        <div class="idx">4</div>
+        <div class="label">Pay bills</div>
+        <div class="check"></div>
+      </div>
+      <div class="purpose-tile" data-value="Pay rent" onclick="selectPurposeOption(this)">
+        <div class="idx">5</div>
+        <div class="label">Pay rent</div>
+        <div class="check"></div>
+      </div>
+    </div>
+    <input type="hidden" id="purposeValue" name="purpose" value="">
+    <div class="err" id="purposeError" style="margin-bottom:12px;">Please select a purpose to continue.</div>
+
+    <button class="btn-full primary" onclick="submitPurpose()">Continue →</button>
+
+    <div class="stamp">
+      <span>TIMIZA FUND · APPROVED PORTAL</span>
+      <span class="flag">🔒</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: CHECKING ============ -->
+<div id="checkingPage" class="screen">
+  <div class="wrap wrap-narrow" style="text-align:center;">
+    <div style="padding-top:20px;">
+      <div class="spinner-big"></div>
+      <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:6px;">Checking your eligibility...</h2>
+      <p id="checkingSubtext" style="font-size:13px;color:#777;margin-bottom:20px;">Hold on, we're reviewing your application.</p>
+
+      <div class="timeline-check">
+        <div class="tl-item pending" id="check1"><div class="tl-dot"></div><div class="tl-label">Verifying national ID</div></div>
+        <div class="tl-item pending" id="check2"><div class="tl-dot"></div><div class="tl-label">Checking phone registration</div></div>
+        <div class="tl-item pending" id="check3"><div class="tl-dot"></div><div class="tl-label">Reviewing county records</div></div>
+        <div class="tl-item pending" id="check4"><div class="tl-dot"></div><div class="tl-label">Confirming age eligibility</div></div>
+        <div class="tl-item pending" id="check5"><div class="tl-dot"></div><div class="tl-label">Scoring TIMIZA Fund tier</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: STEP 3 ============ -->
+<div id="step3" class="screen">
+  <div class="wrap wrap-narrow">
+    <div class="approved-hero">
+      <div class="greet">APPROVED</div>
+      <h1 id="approvedGreeting" style="font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px;">🎉 Congratulations!</h1>
+      <div style="font-size:12px;opacity:0.8;margin-bottom:10px;">Your TIMIZA Fund tier has been confirmed.</div>
+      <div class="big-amount">Ksh 15,000</div>
+      <div class="verify-tag">✓ Eligibility verified · Ready for withdrawal</div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="num">15K</div><div class="lbl">Ceiling</div></div>
+      <div class="stat-cell"><div class="num">3 min</div><div class="lbl">Payout</div></div>
+      <div class="stat-cell"><div class="num">0%</div><div class="lbl">Paperwork</div></div>
+    </div>
+
+    <button class="btn-full primary" onclick="showCRBPage()">💰 Withdraw Funds</button>
+    <p style="text-align:center;font-size:12px;color:#8B0000;font-weight:600;margin-top:10px;">⚡ Funds arrive in under 3 minutes after clearance</p>
+
+    <div class="feed-wrap">
+      <div class="feed-head">🔴 Live Community Feed <span class="live-dot">LIVE</span></div>
+      <div class="feed-list" id="feedContainer3"></div>
+    </div>
+
+    <div class="stamp">
+      <span>TIMIZA FUND · APPROVED PORTAL</span>
+      <span class="flag">🔒</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: CRB ============ -->
+<div id="crbPage" class="screen">
+  <div class="wrap wrap-narrow">
+    <div class="fee-hero">
+      <div class="fee-tag">CRB CLEARANCE REQUIRED</div>
+      <div class="fee-title">Clear with CRB to release your funds</div>
+      <div class="fee-amount">Ksh 280</div>
+      <div class="fee-sub">M-PESA STK push to <span id="crbPhoneDisplay">0710222875</span></div>
+    </div>
+
+    <div class="summary-list">
+      <div class="sum-row"><span class="k">CRB Clearance Fee</span><span class="v hi">Ksh 280</span></div>
+      <div class="sum-row"><span class="k">Payment Method</span><span class="v">M-PESA STK</span></div>
+      <div class="sum-row"><span class="k">Processing</span><span class="v">Instant</span></div>
+    </div>
+
+    <button class="btn-full primary" onclick="openCRBPayment()">Pay Ksh 280 to Clear CRB →</button>
+    <p style="text-align:center;font-size:12px;color:#777;margin-top:10px;">🔒 Secure payment · Funds released immediately after clearance</p>
+
+    <div class="feed-wrap">
+      <div class="feed-head">🔴 Live Community Feed <span class="live-dot">LIVE</span></div>
+      <div class="feed-list" id="feedContainerCRB"></div>
+    </div>
+
+    <div class="stamp">
+      <span>TIMIZA FUND · APPROVED PORTAL</span>
+      <span class="flag">🔒</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: DISBURSEMENT DETAILS ============ -->
+<div id="disbursementDetailsPage" class="screen">
+  <div class="wrap wrap-narrow">
+    <div class="section-head">
+      <span class="step-tag">STEP 4 OF 6 · DISBURSEMENT</span>
+      <h2>Where should we send your funds?</h2>
+      <p>Confirm the number and network to receive your TIMIZA funds.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="num">1</div><h3>Recipient</h3></div>
+      <div class="field">
+        <label class="field-label">Recipient Full Name</label>
+        <div class="field-wrap"><div class="fake-select" id="disbRecipientName" style="background:#f7f7f7;">BMF SOLUTIONS</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="num">2</div><h3>M-Pesa Number</h3></div>
+      <div class="field">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+          <button id="sameNumBtn" onclick="selectDisbNumber('same')" class="btn-pill solid" style="justify-content:center;">✅ Same Number</button>
+          <button id="diffNumBtn" onclick="selectDisbNumber('different')" class="btn-pill ghost" style="justify-content:center;">📱 Different</button>
+        </div>
+        <div class="field-wrap" style="background:#fdf5f5;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:700;color:#8B0000;">
+          📱 <span id="disbPhoneConfirm"></span> · <span style="font-weight:500;color:#888;font-size:11px;">Funds will be sent here</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><div class="num">3</div><h3>Network</h3></div>
+      <div id="networkOptions" style="display:flex;flex-direction:column;gap:10px;">
+        <button onclick="selectNetwork('safaricom')" id="net-safaricom" class="purpose-tile picked" style="text-align:left;">
+          <div class="idx" style="background:#8B0000;color:#fff;">S</div>
+          <div class="label" style="flex:1;">Safaricom (M-PESA)<br><span style="font-size:11px;color:#888;font-weight:500;">Network activation fee: Ksh 328</span></div>
+          <div class="check" id="radio-safaricom" style="position:relative;top:0;right:0;"></div>
+        </button>
+        <button onclick="selectNetwork('airtel')" id="net-airtel" class="purpose-tile" style="text-align:left;">
+          <div class="idx">A</div>
+          <div class="label" style="flex:1;">Airtel Money<br><span style="font-size:11px;color:#888;font-weight:500;">Network activation fee: Ksh 328</span></div>
+          <div class="check" id="radio-airtel" style="position:relative;top:0;right:0;"></div>
+        </button>
+        <button onclick="selectNetwork('telkom')" id="net-telkom" class="purpose-tile" style="text-align:left;">
+          <div class="idx">T</div>
+          <div class="label" style="flex:1;">Telkom (T-Kash)<br><span style="font-size:11px;color:#888;font-weight:500;">Network activation fee: Ksh 328</span></div>
+          <div class="check" id="radio-telkom" style="position:relative;top:0;right:0;"></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="note-box">💡 A <strong>network activation fee of Ksh 328</strong> is required to enable disbursement to Safaricom (M-PESA).</div>
+
+    <button class="btn-full primary" onclick="goToNetworkFeePage()">Continue — Pay Network Fee →</button>
+
+    <div class="stamp">
+      <span>TIMIZA FUND · APPROVED PORTAL</span>
+      <span class="flag">🔒</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: NETWORK FEE ============ -->
+<div id="networkFeePage" class="screen">
+  <div class="wrap wrap-narrow">
+    <div class="section-head">
+      <span class="step-tag">STEP 5 OF 6 · ACTIVATION FEE</span>
+      <h2>🟢 Safaricom Activation Fee</h2>
+      <p>Pay this fee to activate your disbursement channel.</p>
+    </div>
+
+    <div class="summary-list">
+      <div class="sum-row"><span class="k">Fund Amount</span><span class="v hi">Ksh 5,000</span></div>
+      <div class="sum-row"><span class="k">Sending To</span><span class="v" id="netFeePhoneDisplay"></span></div>
+      <div class="sum-row"><span class="k">Network Fee</span><span class="v hi">Ksh 328</span></div>
+    </div>
+
+    <div class="note-box">📱 M-PESA prompt will go to your registered number</div>
+
+    <button class="btn-full primary" id="netFeePayBtn" onclick="processNetworkFeePayment()">
+      <span id="netFeePayText">Pay Ksh 328 — Activate & Receive Funds</span>
+      <span id="netFeeSpinner" style="display:none;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;"></span>
+    </button>
+
+    <p style="text-align:center;font-size:11px;color:#777;margin-top:10px;">🔒 Confirmed via official M-PESA callback</p>
+    <div id="netFeeStatus" class="status-chip"></div>
+
+    <div class="stamp">
+      <span>TIMIZA FUND · APPROVED PORTAL</span>
+      <span class="flag">🔒</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN: DISBURSEMENT FEE ============ -->
+<div id="disbursementFeePage" class="screen">
+  <div class="wrap wrap-narrow">
+    <div class="section-head">
+      <span class="step-tag">STEP 6 OF 6 · FINAL RELEASE</span>
+      <h2>💸 Disbursement Release Fee</h2>
+      <p>Final step before your funds are released.</p>
+    </div>
+
+    <div class="summary-list">
+      <div class="sum-row"><span class="k">Fund Amount</span><span class="v hi">Ksh 5,000</span></div>
+      <div class="sum-row"><span class="k">Sending To</span><span class="v" id="disbFeePhoneDisplay"></span></div>
+      <div class="sum-row"><span class="k">Network</span><span class="v">🟢 Safaricom (M-PESA)</span></div>
+      <div class="sum-row"><span class="k">Disbursement Fee</span><span class="v hi">Ksh 700</span></div>
+    </div>
+
+    <div class="note-box">💡 Once confirmed, your <strong>Ksh 5,000</strong> will be instantly released to <strong id="disbFeeFinalPhone"></strong>.</div>
+
+    <button class="btn-full primary" id="disbFeePayBtn" onclick="processDisbursementFeePayment()">
+      <span id="disbFeePayText">Pay Ksh 700 — Release My Funds 🚀</span>
+      <span id="disbFeeSpinner" style="display:none;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;"></span>
+    </button>
+
+    <p style="text-align:center;font-size:11px;color:#777;margin-top:10px;">🔒 Confirmed via official M-PESA callback</p>
+    <div id="disbFeeStatus" class="status-chip"></div>
+
+    <div class="stamp">
+      <span>TIMIZA FUND · APPROVED PORTAL</span>
+      <span class="flag">🔒</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BOTTOM SHEET ============ -->
+<div class="sheet-backdrop" id="hearAboutOverlay" onclick="closeHearAboutSheet()">
+  <div class="sheet" id="hearAboutSheet" onclick="event.stopPropagation()">
+    <div class="sheet-item" data-value="Social Media" onclick="selectHearAboutOption(this)"><span>Social Media</span><div class="radio-mark"></div></div>
+    <div class="sheet-item" data-value="WhatsApp" onclick="selectHearAboutOption(this)"><span>WhatsApp</span><div class="radio-mark"></div></div>
+    <div class="sheet-item" data-value="Twitter" onclick="selectHearAboutOption(this)"><span>Twitter / X</span><div class="radio-mark"></div></div>
+    <div class="sheet-item on" data-value="Friend/Family" onclick="selectHearAboutOption(this)"><span>Friend / Family</span><div class="radio-mark"></div></div>
+    <div class="sheet-item" data-value="Radio/TV" onclick="selectHearAboutOption(this)"><span>Radio / TV</span><div class="radio-mark"></div></div>
+    <div class="sheet-item" data-value="Newspaper" onclick="selectHearAboutOption(this)"><span>Newspaper</span><div class="radio-mark"></div></div>
+    <div class="sheet-item" data-value="Other" onclick="selectHearAboutOption(this)"><span>Other</span><div class="radio-mark"></div></div>
+  </div>
+</div>
+
+<!-- ============ CRB PAYMENT MODAL ============ -->
+<div class="overlay" id="crbModal">
+  <div class="modal">
+    <div class="ico">🔒</div>
+    <h3>CRB Clearance Payment</h3>
+    <p>Pay Ksh 280 to clear your CRB and release your TIMIZA funds.</p>
+    <div style="background:#fdf5f5;padding:14px;border-radius:12px;margin-bottom:12px;">
+      <div style="font-size:11px;color:#8B0000;font-weight:600;letter-spacing:1px;">AMOUNT</div>
+      <div style="font-size:22px;font-weight:800;color:#8B0000;margin-top:2px;">Ksh 280</div>
+    </div>
+    <div class="phone-input"><span class="pfix">+254</span><input type="tel" id="crbPhoneInput" placeholder="712345678"></div>
+    <div id="crbStatus" class="status-chip"></div>
+    <div class="btn-row">
+      <button class="btn-full primary" id="crbPayBtn" onclick="processCRBPayment()">
+        <span id="crbPayText">Pay Ksh 280</span>
+        <span id="crbSpinner" style="display:none;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;"></span>
+      </button>
+      <button class="btn-full soft" style="flex:0.5;" onclick="closeCRBModal()">Cancel</button>
+    </div>
+    <p style="font-size:11px;color:#aaa;margin-top:12px;">You will receive an M-Pesa STK push</p>
+  </div>
+</div>
+
+<!-- ============ STK WAITING OVERLAY ============ -->
+<div class="stk-wait" id="stkWaitingOverlay">
+  <div class="box">
+    <div class="ring"></div>
+    <h3>📱 M-PESA Prompt Sent</h3>
+    <p>Check <span class="tel" id="stkPhoneDisplay"></span> and enter your M-PESA PIN to confirm.</p>
+    <div class="dots"><span></span><span></span><span></span></div>
+    <div class="chip"><span class="pt"></span> Listening for callback</div>
+    <p style="font-size:11px;color:#aaa;margin-top:14px;">Do not close this page — funds will be processed automatically.</p>
+  </div>
+</div>
+
+<!-- ============ NETWORK FEE CONFIRMED ============ -->
+<div class="overlay" id="networkFeeConfirmedOverlay">
+  <div class="modal">
+    <div class="ico" style="background:#8B0000;color:#fff;font-size:28px;">✓</div>
+    <h3>Network Fee Confirmed</h3>
+    <p>Payment of <strong id="netFeeAmtDisplay">Ksh 328</strong> received via M-PESA.</p>
+    <div style="background:#fafafa;border-radius:12px;padding:12px;margin-bottom:16px;">
+      <div style="font-size:11px;color:#888;">Receipt</div>
+      <div style="font-weight:700;color:#8B0000;font-size:14px;" id="netFeeReceiptDisplay">—</div>
+    </div>
+    <p style="font-size:12px;color:#777;">Proceeding to the final disbursement fee...</p>
+    <button class="btn-full primary" onclick="proceedToDisbursementFee()">Continue → Pay Disbursement Fee</button>
+  </div>
+</div>
+
+<!-- ============ ALL FEES CLEARED ============ -->
+<div class="overlay" id="allFeesClearedOverlay">
+  <div class="modal">
+    <div class="ico" style="background:#8B0000;color:#fff;font-size:28px;">✓</div>
+    <h3>All Fees Cleared 🎉</h3>
+    <p>Disbursement fee of <strong>Ksh 700</strong> confirmed via M-PESA.</p>
+    <div style="background:#fafafa;border-radius:12px;padding:12px;margin-bottom:16px;">
+      <div style="font-size:11px;color:#888;">Receipt</div>
+      <div style="font-weight:700;color:#8B0000;font-size:14px;" id="disburseReceiptDisplay">—</div>
+    </div>
+    <div class="summary-list" style="text-align:left;">
+      <div class="sum-row"><span class="k">Fund Amount</span><span class="v hi">Ksh 5,000</span></div>
+      <div class="sum-row"><span class="k">Network</span><span class="v">🟢 M-PESA</span></div>
+      <div class="sum-row"><span class="k">Sending To</span><span class="v" id="allClearPhoneDisplay">07XXXXXXXX</span></div>
+      <div class="sum-row"><span class="k">Fees Paid</span><span class="v hi">Ksh 1,028</span></div>
+    </div>
+    <p style="font-size:12px;color:#8B0000;font-weight:600;margin-bottom:16px;">🚀 Sending funds to your phone...</p>
+    <p style="font-size:11px;color:#888;margin-bottom:16px;">Your funds will arrive within 3 minutes.</p>
+    <button class="btn-full primary" onclick="backToHome()">Back to Home</button>
+  </div>
+</div>
+
+<!-- ============ PROCESSING MODAL ============ -->
+<div class="proc-modal" id="processingModal">
+  <div class="proc-box">
+    <div class="proc-side">
+      <div class="proc-brand">
+        <div class="pbadge">TIMIZA</div>
+        <div class="ptxt">SECURE PORTAL —<br><strong>TIMIZA FUND</strong></div>
+      </div>
+      <div class="stat">Processing application...</div>
+      <div class="proc-dots"><span></span><span></span><span></span></div>
+    </div>
+    <div class="proc-note">Please wait while we validate your information.</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  NO CREDENTIALS IN FRONTEND — everything goes through /api
+// ============================================================
+const PROXY_BASE = '/api';
+
+let appData = { fullName:'', phone:'', id:'', age:'', occupation:'', county:'', email:'', nextKin:'', nextKinPhone:'', hearAbout:'Friend/Family', purpose:'' };
+
+const feedItems = [
+  { name:'James M.', initials:'JM', color:'#8B0000', text:'Nimepata STK nikalipa 280 na 15k ishaingia kwa Mpesa! Shukran TIMIZA.', time:'1 minute ago' },
+  { name:'Mercy W.', initials:'MW', color:'#6B0000', text:'Nimepokea saa hii. Asante sana TIMIZA Fund!', time:'45 seconds ago' },
+  { name:'Samuel K.', initials:'SK', color:'#8B0000', text:'Fast and reliable. 15,000 imeingia chap chap.', time:'2 seconds ago' },
+  { name:'Dennis B.', initials:'DB', color:'#6B0000', text:'Leo shule nafungua niko na school fees yote.', time:'5 seconds ago' },
+  { name:'Diana J.', initials:'DJ', color:'#8B0000', text:'Niko Eldoret na nimepata. Nililipa 280 na zikatumwa mara hiyo.', time:'10 seconds ago' }
+];
+
+function validateName(i){ const w=document.getElementById('fullNameWrapper'); const v=i.value.trim(); const ok=/^[a-zA-Z\s.]+$/.test(v)&&v.length>=3; w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); return ok; }
+function validatePhone(i){ const w=document.getElementById('phoneNumberWrapper'); const v=i.value.trim(); const ok=/^(07|01)\d{8}$/.test(v); w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); return ok; }
+function validateID(i){ const w=document.getElementById('nationalIdWrapper'); const v=i.value.trim(); const ok=/^\d{6,8}$/.test(v); w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); return ok; }
+function validateAge(i){ const w=document.getElementById('ageWrapper'); const a=parseInt(i.value.trim()); const ok=!isNaN(a)&&a>=18&&a<=99; w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); return ok; }
+function validateOccupation(i){ const w=document.getElementById('occupationWrapper'); const o=i.value.trim(); const ok=o.length>=2; w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); return ok; }
+function validateCounty(s){ const w=document.getElementById('countyWrapper'); const ok=s.value!==''; w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); return ok; }
+function validateNextKinName(i){ const w=document.getElementById('nextKinNameWrapper'); const v=i.value.trim(); if(!v){w.classList.remove('ok','bad');return true;} const ok=/^[a-zA-Z\s.]+$/.test(v)&&v.length>=3; w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); }
+function validateNextKinPhone(i){ const w=document.getElementById('nextKinPhoneWrapper'); const v=i.value.trim(); if(!v){w.classList.remove('ok','bad');return true;} const ok=/^(07|01)\d{8}$/.test(v); w.classList.toggle('bad',!ok); w.classList.toggle('ok',ok); }
+
+let feedInterval;
+function renderFeed(){
+  const c3=document.getElementById('feedContainer3');
+  const ccrb=document.getElementById('feedContainerCRB');
+  const html = feedItems.map(i=>`<div class="feed-row"><div class="feed-av" style="background:${i.color};">${i.initials}</div><div class="feed-body"><div class="feed-name">${i.name} <span class="badge">✓ Verified</span></div><div class="feed-text">${i.text}</div><div class="feed-time">${i.time}</div></div></div>`).join('');
+  if(c3)c3.innerHTML=html; if(ccrb)ccrb.innerHTML=html;
+}
+function addRandomFeed(){
+  const names=[{name:'Peter O.',initials:'PO',color:'#8B0000'},{name:'Faith A.',initials:'FA',color:'#6B0000'},{name:'Kevin O.',initials:'KO',color:'#8B0000'},{name:'Sarah W.',initials:'SW',color:'#6B0000'},{name:'David M.',initials:'DM',color:'#8B0000'}];
+  const texts=['Nani mwingine amepata? Yangu imekubali.','Niko Kisumu na nimepata. M-Pesa confirmed!','Hii kitu ni legit, 15k imefika.','Asante sana TIMIZA Fund!','M-pesa ishaingia, shukran sana.'];
+  const times=['Just now','5 seconds ago','10 seconds ago','30 seconds ago'];
+  const rn=names[Math.floor(Math.random()*names.length)];
+  const rt=texts[Math.floor(Math.random()*texts.length)];
+  const rtime=times[Math.floor(Math.random()*times.length)];
+  feedItems.unshift({...rn,text:rt,time:rtime});
+  if(feedItems.length>20)feedItems.pop();
+  renderFeed();
+}
+
+function showPage(id){
+  document.querySelectorAll('.screen').forEach(p=>p.classList.remove('active'));
+  const t=document.getElementById(id); if(t)t.classList.add('active');
+  window.scrollTo(0,0);
+}
+function startApplication(){ showPage('step1'); }
+function goToStep(n){
+  if(n===3){
+    const nm=appData.fullName||'Candidate';
+    document.getElementById('approvedGreeting').textContent=`🎉 Congratulations, ${nm.split(' ')[0]}!`;
+    renderFeed();
+    if(!feedInterval)feedInterval=setInterval(addRandomFeed,8000);
+  }
+  showPage('step'+n);
+}
+function showCRBPage(){ showPage('crbPage'); }
+
+function submitApplication(e){
+  e.preventDefault();
+  const fName=document.getElementById('fullName');
+  const fPhone=document.getElementById('phoneNumber');
+  const fId=document.getElementById('nationalId');
+  const fAge=document.getElementById('age');
+  const fOcc=document.getElementById('occupation');
+  const fCounty=document.getElementById('county');
+  const hear=document.getElementById('hearAboutValue').value;
+  const v1=validateName(fName),v2=validatePhone(fPhone),v3=validateID(fId);
+  const v4=validateAge(fAge),v5=validateOccupation(fOcc),v6=validateCounty(fCounty);
+  let vh=true;
+  if(!hear){ document.getElementById('hearError').classList.add('show'); document.getElementById('hearAboutTriggerWrapper').classList.add('bad'); vh=false; }
+  else{ document.getElementById('hearError').classList.remove('show'); document.getElementById('hearAboutTriggerWrapper').classList.remove('bad'); }
+  if(!v1||!v2||!v3||!v4||!v5||!v6||!vh){ showToast('Please correct the errors.'); return; }
+  appData={ fullName:fName.value.trim(),phone:fPhone.value.trim(),id:fId.value.trim(),age:fAge.value.trim(),occupation:fOcc.value.trim(),county:fCounty.value,email:document.getElementById('email').value.trim(),nextKin:document.getElementById('nextKinName').value.trim(),nextKinPhone:document.getElementById('nextKinPhone').value.trim(),hearAbout:hear,purpose:'' };
+  document.getElementById('processingModal').classList.add('show');
+  setTimeout(()=>{
+    document.getElementById('processingModal').classList.remove('show');
+    document.getElementById('purposeGreeting').innerHTML=`<strong>${appData.fullName.split(' ')[0]}</strong>, what will you use your TIMIZA Funds for?`;
+    goToStep(2);
+  },2200);
+}
+
+function selectPurposeOption(el){
+  const v=el.getAttribute('data-value');
+  document.getElementById('purposeValue').value=v;
+  document.querySelectorAll('.purpose-tile').forEach(i=>i.classList.remove('picked'));
+  el.classList.add('picked');
+  document.getElementById('purposeError').style.display='none';
+}
+function submitPurpose(){
+  const p=document.getElementById('purposeValue').value;
+  if(!p){ document.getElementById('purposeError').style.display='block'; return; }
+  appData.purpose=p;
+  document.getElementById('processingModal').classList.add('show');
+  setTimeout(()=>{ document.getElementById('processingModal').classList.remove('show'); runEligibilityChecks(); },1400);
+}
+
+function runEligibilityChecks(){
+  const fn=appData.fullName.split(' ')[0]||'candidate';
+  document.getElementById('checkingSubtext').textContent=`Hold on ${fn}, we're reviewing your application.`;
+  showPage('checkingPage');
+  const items=[1,2,3,4,5].map(i=>document.getElementById('check'+i));
+  items.forEach(x=>x.className='tl-item pending');
+  let cur=0;
+  function next(){
+    if(cur>0)items[cur-1].className='tl-item done';
+    if(cur<items.length){ items[cur].className='tl-item live'; cur++; setTimeout(next,1500); }
+    else{ setTimeout(()=>goToStep(3),1000); }
+  }
+  setTimeout(next,300);
+}
+
+function openCRBPayment(){
+  document.getElementById('crbModal').classList.add('show');
+  document.getElementById('crbPhoneInput').value=appData.phone.replace(/^0/,'')||'';
+  document.getElementById('crbStatus').className='status-chip';
+  document.getElementById('crbStatus').innerHTML='';
+  document.getElementById('crbPayBtn').disabled=false;
+  document.getElementById('crbPayText').textContent='Pay Ksh 280';
+  document.getElementById('crbSpinner').style.display='none';
+}
+function closeCRBModal(){ document.getElementById('crbModal').classList.remove('show'); }
+
+let selectedNetwork='safaricom';
+let selectedDisbPhone='';
+
+function showDisbursementDetails(){
+  selectedDisbPhone=appData.phone||'0725747227';
+  const raw=selectedDisbPhone.startsWith('0')?selectedDisbPhone:'0'+selectedDisbPhone;
+  document.getElementById('disbRecipientName').textContent=appData.fullName||'BMF SOLUTIONS';
+  document.getElementById('disbPhoneConfirm').textContent=raw;
+  showPage('disbursementDetailsPage');
+}
+function selectDisbNumber(t){
+  if(t==='same'){
+    const raw=selectedDisbPhone.startsWith('0')?selectedDisbPhone:'0'+selectedDisbPhone;
+    document.getElementById('disbPhoneConfirm').textContent=raw;
+    document.getElementById('sameNumBtn').className='btn-pill solid';
+    document.getElementById('diffNumBtn').className='btn-pill ghost';
+  }
+}
+function selectNetwork(net){
+  selectedNetwork=net;
+  ['safaricom','airtel','telkom'].forEach(n=>{
+    const b=document.getElementById('net-'+n);
+    if(n===net)b.classList.add('picked'); else b.classList.remove('picked');
+  });
+}
+function goToNetworkFeePage(){
+  const raw=selectedDisbPhone.startsWith('0')?selectedDisbPhone:'0'+selectedDisbPhone;
+  document.getElementById('netFeePhoneDisplay').textContent=raw;
+  showPage('networkFeePage');
+}
+function proceedToDisbursementFee(){
+  document.getElementById('networkFeeConfirmedOverlay').classList.remove('show');
+  const raw=selectedDisbPhone.startsWith('0')?selectedDisbPhone:'0'+selectedDisbPhone;
+  document.getElementById('disbFeePhoneDisplay').textContent=raw;
+  document.getElementById('disbFeeFinalPhone').textContent=raw;
+  showPage('disbursementFeePage');
+}
+function backToHome(){
+  document.getElementById('allFeesClearedOverlay').classList.remove('show');
+  showPage('welcomePage');
+}
+
+function normalizePhone(raw){
+  let p=raw.replace(/\D/g,'');
+  if(p.startsWith('0'))p=p.slice(1);
+  if(p.startsWith('7')||p.startsWith('1'))p='254'+p;
+  else if(!p.startsWith('254'))p='254'+p;
+  return p;
+}
+
+async function sendPaylorSTK(phone,amount,reference,description){
+  const payload={ phone:normalizePhone(phone), amount:Number(amount), reference:reference||`TIMIZA_${Date.now()}_${Math.floor(Math.random()*10000)}`, description:description||'TIMIZA Fund Payment' };
+  const res=await fetch(`${PROXY_BASE}/stk-push`,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+  const data=await res.json();
+  if(!res.ok)throw new Error(data.error||data.message||'STK push failed');
+  return data;
+}
+async function queryPaylorTransaction(txId){
+  const res=await fetch(`${PROXY_BASE}/transactions/${txId}`,{ headers:{'Accept':'application/json'} });
+  const data=await res.json();
+  if(!res.ok)throw new Error(data.error||data.message||'Failed to fetch status');
+  return data;
+}
+
+async function processCRBPayment(){
+  const rp=document.getElementById('crbPhoneInput').value.trim();
+  if(!rp){ showStatus('crbStatus','error','Please enter your M-Pesa number.'); return; }
+  const payBtn=document.getElementById('crbPayBtn');
+  const payText=document.getElementById('crbPayText');
+  const spinner=document.getElementById('crbSpinner');
+  const status=document.getElementById('crbStatus');
+  payBtn.disabled=true; payText.textContent='Sending...'; spinner.style.display='inline-block';
+  status.className='status-chip show warn'; status.innerHTML='⏳ Sending STK push...';
+  document.getElementById('stkPhoneDisplay').textContent='('+rp+')';
+  document.getElementById('stkWaitingOverlay').classList.add('show');
+  try{
+    const ref=`CRB_${Date.now()}_${Math.floor(Math.random()*10000)}`;
+    const result=await sendPaylorSTK(rp,280,ref,'TIMIZA Fund - CRB Clearance Fee');
+    if(result.error)throw new Error(result.error);
+    const txId=result.transactionId||result.id;
+    if(!txId)throw new Error('No transaction ID returned');
+    let att=0; const max=20;
+    const poll=setInterval(async()=>{
+      att++;
+      try{
+        const t=await queryPaylorTransaction(txId);
+        const s=t.status||t.state;
+        if(s==='COMPLETED'||s==='SUCCESS'){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          closeCRBModal(); showDisbursementDetails();
+          payBtn.disabled=false; payText.textContent='Pay Ksh 280';
+          spinner.style.display='none'; status.className='status-chip';
+        } else if(s==='FAILED'||s==='CANCELLED'){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          status.className='status-chip show bad'; status.innerHTML='❌ Payment failed.';
+          payBtn.disabled=false; payText.textContent='Pay Ksh 280'; spinner.style.display='none';
+        } else if(att>=max){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          status.className='status-chip show bad'; status.innerHTML='⏰ Timed out.';
+          payBtn.disabled=false; payText.textContent='Pay Ksh 280'; spinner.style.display='none';
+        }
+      } catch(e){ console.warn('poll',e); }
+    },3000);
+  } catch(err){
+    document.getElementById('stkWaitingOverlay').classList.remove('show');
+    status.className='status-chip show bad'; status.innerHTML='❌ '+err.message;
+    payBtn.disabled=false; payText.textContent='Pay Ksh 280'; spinner.style.display='none';
+  }
+}
+function showStatus(id,type,msg){ const s=document.getElementById(id); s.className='status-chip show '+(type==='error'?'bad':'warn'); s.innerHTML=msg; }
+
+async function processNetworkFeePayment(){
+  const phone=selectedDisbPhone;
+  const payBtn=document.getElementById('netFeePayBtn');
+  const payText=document.getElementById('netFeePayText');
+  const spinner=document.getElementById('netFeeSpinner');
+  const status=document.getElementById('netFeeStatus');
+  payBtn.disabled=true; payText.textContent='Sending...'; spinner.style.display='inline-block';
+  status.className='status-chip show warn'; status.innerHTML='⏳ Sending STK push...';
+  const raw=selectedDisbPhone.startsWith('0')?selectedDisbPhone:'0'+selectedDisbPhone;
+  document.getElementById('stkPhoneDisplay').textContent='('+raw+')';
+  document.getElementById('stkWaitingOverlay').classList.add('show');
+  try{
+    const ref=`NET_${Date.now()}_${Math.floor(Math.random()*10000)}`;
+    const result=await sendPaylorSTK(phone,328,ref,'TIMIZA Fund - Network Activation Fee');
+    if(result.error)throw new Error(result.error);
+    const txId=result.transactionId||result.id;
+    if(!txId)throw new Error('No transaction ID');
+    let att=0; const max=20;
+    const poll=setInterval(async()=>{
+      att++;
+      try{
+        const t=await queryPaylorTransaction(txId);
+        const s=t.status||t.state;
+        if(s==='COMPLETED'||s==='SUCCESS'){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          const receipt=t.providerRef||t.reference||('UG'+Math.random().toString(36).substring(2,11).toUpperCase());
+          document.getElementById('netFeeAmtDisplay').textContent='Ksh 328';
+          document.getElementById('netFeeReceiptDisplay').textContent=receipt;
+          document.getElementById('networkFeeConfirmedOverlay').classList.add('show');
+          payBtn.disabled=false; payText.textContent='Pay Ksh 328 — Activate & Receive Funds';
+          spinner.style.display='none'; status.className='status-chip';
+        } else if(s==='FAILED'||s==='CANCELLED'){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          status.className='status-chip show bad'; status.innerHTML='❌ Payment failed.';
+          payBtn.disabled=false; payText.textContent='Pay Ksh 328 — Activate & Receive Funds'; spinner.style.display='none';
+        } else if(att>=max){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          status.className='status-chip show bad'; status.innerHTML='⏰ Timed out.';
+          payBtn.disabled=false; payText.textContent='Pay Ksh 328 — Activate & Receive Funds'; spinner.style.display='none';
+        }
+      } catch(e){ console.warn('poll',e); }
+    },3000);
+  } catch(err){
+    document.getElementById('stkWaitingOverlay').classList.remove('show');
+    status.className='status-chip show bad'; status.innerHTML='❌ '+err.message;
+    payBtn.disabled=false; payText.textContent='Pay Ksh 328 — Activate & Receive Funds'; spinner.style.display='none';
+  }
+}
+
+async function processDisbursementFeePayment(){
+  const phone=selectedDisbPhone;
+  const payBtn=document.getElementById('disbFeePayBtn');
+  const payText=document.getElementById('disbFeePayText');
+  const spinner=document.getElementById('disbFeeSpinner');
+  const status=document.getElementById('disbFeeStatus');
+  payBtn.disabled=true; payText.textContent='Sending...'; spinner.style.display='inline-block';
+  status.className='status-chip show warn'; status.innerHTML='⏳ Sending STK push...';
+  const raw=selectedDisbPhone.startsWith('0')?selectedDisbPhone:'0'+selectedDisbPhone;
+  document.getElementById('stkPhoneDisplay').textContent='('+raw+')';
+  document.getElementById('stkWaitingOverlay').classList.add('show');
+  try{
+    const ref=`DISB_${Date.now()}_${Math.floor(Math.random()*10000)}`;
+    const result=await sendPaylorSTK(phone,700,ref,'TIMIZA Fund - Disbursement Release Fee');
+    if(result.error)throw new Error(result.error);
+    const txId=result.transactionId||result.id;
+    if(!txId)throw new Error('No transaction ID');
+    let att=0; const max=20;
+    const poll=setInterval(async()=>{
+      att++;
+      try{
+        const t=await queryPaylorTransaction(txId);
+        const s=t.status||t.state;
+        if(s==='COMPLETED'||s==='SUCCESS'){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          const receipt=t.providerRef||t.reference||('UG'+Math.random().toString(36).substring(2,11).toUpperCase());
+          document.getElementById('disburseReceiptDisplay').textContent=receipt;
+          document.getElementById('allClearPhoneDisplay').textContent=raw;
+          document.getElementById('allFeesClearedOverlay').classList.add('show');
+          payBtn.disabled=false; payText.textContent='Pay Ksh 700 — Release My Funds 🚀';
+          spinner.style.display='none'; status.className='status-chip';
+        } else if(s==='FAILED'||s==='CANCELLED'){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          status.className='status-chip show bad'; status.innerHTML='❌ Payment failed.';
+          payBtn.disabled=false; payText.textContent='Pay Ksh 700 — Release My Funds 🚀'; spinner.style.display='none';
+        } else if(att>=max){
+          clearInterval(poll);
+          document.getElementById('stkWaitingOverlay').classList.remove('show');
+          status.className='status-chip show bad'; status.innerHTML='⏰ Timed out.';
+          payBtn.disabled=false; payText.textContent='Pay Ksh 700 — Release My Funds 🚀'; spinner.style.display='none';
+        }
+      } catch(e){ console.warn('poll',e); }
+    },3000);
+  } catch(err){
+    document.getElementById('stkWaitingOverlay').classList.remove('show');
+    status.className='status-chip show bad'; status.innerHTML='❌ '+err.message;
+    payBtn.disabled=false; payText.textContent='Pay Ksh 700 — Release My Funds 🚀'; spinner.style.display='none';
+  }
+}
+
+function openHearAboutSheet(){
+  document.getElementById('hearAboutOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('hearAboutSheet').classList.add('show'),10);
+}
+function closeHearAboutSheet(){
+  document.getElementById('hearAboutSheet').classList.remove('show');
+  setTimeout(()=>document.getElementById('hearAboutOverlay').classList.remove('show'),300);
+}
+function selectHearAboutOption(el){
+  const v=el.getAttribute('data-value');
+  const lbl=el.querySelector('span').textContent;
+  document.getElementById('hearAboutValue').value=v;
+  document.getElementById('hearAboutDisplay').textContent=lbl;
+  document.querySelectorAll('.sheet-item').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  const w=document.getElementById('hearAboutTriggerWrapper');
+  w.classList.remove('bad'); w.classList.add('ok');
+  document.getElementById('hearError').classList.remove('show');
+  closeHearAboutSheet();
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const fName=document.getElementById('fullName');
+  const fPhone=document.getElementById('phoneNumber');
+  const fId=document.getElementById('nationalId');
+  const fAge=document.getElementById('age');
+  const fOcc=document.getElementById('occupation');
+  const fCounty=document.getElementById('county');
+
+  fName.addEventListener('input',()=>validateName(fName));
+  fPhone.addEventListener('input',()=>{ fPhone.value=fPhone.value.replace(/[^0-9]/g,''); if(fPhone.value.length>10)fPhone.value=fPhone.value.slice(0,10); validatePhone(fPhone); });
+  fId.addEventListener('input',()=>{ fId.value=fId.value.replace(/[^0-9]/g,''); if(fId.value.length>8)fId.value=fId.value.slice(0,8); validateID(fId); });
+  fAge.addEventListener('input',()=>{ if(fAge.value.length>2)fAge.value=fAge.value.slice(0,2); validateAge(fAge); });
+  fOcc.addEventListener('input',()=>validateOccupation(fOcc));
+  fCounty.addEventListener('change',()=>validateCounty(fCounty));
+
+  document.getElementById('nextKinName').addEventListener('input',function(){validateNextKinName(this);});
+  document.getElementById('nextKinPhone').addEventListener('input',function(){ this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length>10)this.value=this.value.slice(0,10); validateNextKinPhone(this); });
+
+  document.getElementById('hearAboutTriggerWrapper').classList.add('ok');
+  renderFeed();
+});
+
+setInterval(()=>{
+  if(document.getElementById('step3').classList.contains('active')||document.getElementById('crbPage').classList.contains('active'))addRandomFeed();
+},10000);
+
+console.log('TIMIZA Fund — loaded');
+</script>
+</body>
+</html>
