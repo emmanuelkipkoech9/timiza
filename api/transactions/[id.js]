@@ -1,0 +1,41 @@
+const fetch = require('node-fetch');
+
+module.exports = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+
+  const apiKey = (process.env.PAYLOR_API_KEY || '').trim();
+  if (!apiKey) return res.status(500).json({ error: 'Server misconfigured: PAYLOR_API_KEY missing' });
+
+  try {
+    const { id } = req.query;
+    if (!id) return res.status(400).json({ error: 'Transaction ID required' });
+
+    const response = await fetch(
+      `https://api.paylorke.com/api/v1/merchants/payments/transactions/${id}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: data.message || data.error || 'Failed to fetch status'
+      });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error('Status Function error:', error);
+    return res.status(500).json({ error: 'Internal server error: ' + error.message });
+  }
+};
